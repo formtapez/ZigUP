@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<workspace>
+  <project>
+    <path>$WS_DIR$\ZigUP.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>ZigUP</project>
+        <configuration>CoordinatorEB</configuration>
+      </member>
+      <member>
+        <project>ZigUP</project>
+        <configuration>RouterEB</configuration>
+      </member>
+      <member>
+        <project>ZigUP</project>
+        <configuration>EndDeviceEB</configuration>
+      </member>
+      <member>
+        <project>ZigUP</project>
+        <configuration>RouterZLight</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>
+
+
