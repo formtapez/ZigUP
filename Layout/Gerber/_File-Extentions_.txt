@@ -1,0 +1,12 @@
+.GBL -> Bottom Layer (Copper)
+.GBO -> Bottom Outlines (Silkscreen)
+.GBS -> Bottom Stop (Solder mask)
+
+.GKO -> Milling
+
+.GTL -> Top Layer (Copper)
+.GTO -> Top Outlines (Silkscreen)
+.GTS -> Top Stop (Solder mask)
+
+.XLN -> Drilling (Excellon)
+
