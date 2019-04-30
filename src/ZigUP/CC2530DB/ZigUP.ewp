@@ -4651,7 +4651,76 @@
     <group>
         <name>App</name>
         <file>
+            <name>$PROJ_DIR$\..\Source\adc.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Source\adc.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Source\bitmasks.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Source\delay.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Source\delay.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Source\dht22.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Source\dht22.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Source\ds18b20.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Source\ds18b20.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Source\global.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Source\global.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Source\interrupts.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Source\interrupts.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Source\led.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Source\led.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\Source\OSAL_ZigUP.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Source\random.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Source\random.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Source\uart.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Source\uart.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Source\utils.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Source\utils.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Source\ws2812.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Source\ws2812.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\Source\zcl_zigup.c</name>

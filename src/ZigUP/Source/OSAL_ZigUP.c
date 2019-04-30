@@ -1,7 +1,3 @@
-/*********************************************************************
- * INCLUDES
- */
-
 #include "ZComDef.h"
 #include "hal_drivers.h"
 #include "OSAL.h"
@@ -24,9 +20,6 @@
 
 #include "zcl_zigup.h"
 
-/*********************************************************************
- * GLOBAL VARIABLES
- */
 
 // The order in this table must be identical to the task initialization calls below in osalInitTask.
 const pTaskEventHandlerFn tasksArr[] = {
@@ -50,10 +43,6 @@ const pTaskEventHandlerFn tasksArr[] = {
 
 const uint8 tasksCnt = sizeof( tasksArr ) / sizeof( tasksArr[0] );
 uint16 *tasksEvents;
-
-/*********************************************************************
- * FUNCTIONS
- *********************************************************************/
 
 /*********************************************************************
  * @fn      osalInitTasks

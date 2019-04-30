@@ -1,6 +1,3 @@
-/*********************************************************************
- * INCLUDES
- */
 #include "ZComDef.h"
 #include "OSAL.h"
 #include "AF.h"
@@ -23,27 +20,11 @@
 
 #include "zcl_zigup.h"
 
-/*********************************************************************
- * CONSTANTS
- */
-
 #define ZIGUP_DEVICE_VERSION     0
 #define ZIGUP_FLAGS              0
 
 #define ZIGUP_HWVERSION          1
 #define ZIGUP_ZCLVERSION         1
-
-/*********************************************************************
- * TYPEDEFS
- */
-
-/*********************************************************************
- * MACROS
- */
-
-/*********************************************************************
- * GLOBAL VARIABLES
- */
 
 // Basic Cluster
 const uint8 zclZigUP_HWRevision = ZIGUP_HWVERSION;
@@ -241,16 +222,3 @@ SimpleDescriptionFormat_t zclZigUP_SimpleDesc[1] = {
   (cId_t *)zclZigUP_OutClusterList //  byte *pAppInClusterList;
 }
 };
-
-/*********************************************************************
- * GLOBAL FUNCTIONS
- */
-
-/*********************************************************************
- * LOCAL FUNCTIONS
- */
-
-/****************************************************************************
-****************************************************************************/
-
-
