@@ -8,7 +8,7 @@ extern "C"
 
 #include "zcl.h"
 #include "zcl_general.h"
-
+#include "zcl_lighting.h"
 
 #define ZIGUP_ENDPOINT            8
 
@@ -56,7 +56,11 @@ static void zclZigUP_BasicResetCB( void );
 static void zclZigUP_IdentifyCB( zclIdentify_t *pCmd );
 static void zclZigUP_IdentifyQueryRspCB( zclIdentifyQueryRsp_t *pRsp );
 static void zclZigUP_OnOffCB( uint8 cmd );
+ZStatus_t zclZigUP_MoveToColorCB( zclCCMoveToColor_t *pCmd );
+
+
 static void zclZigUP_ProcessIdentifyTimeChange( void );
+
 
 // Functions to process ZCL Foundation incoming Command/Response messages
 static void zclZigUP_ProcessIncomingMsg( zclIncomingMsg_t *msg );

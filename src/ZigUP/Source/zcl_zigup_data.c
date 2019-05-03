@@ -42,7 +42,7 @@ uint8 zclZigUP_DeviceEnable = DEVICE_ENABLED;
 uint16 zclZigUP_IdentifyTime = 0;
 
 // On/Off Cluster
-uint8  zclZigUP_OnOff = LIGHT_OFF;
+uint8 zclZigUP_OnOff = LIGHT_OFF;
 
 #if ZCL_DISCOVER
 CONST zclCommandRec_t zclZigUP_Cmds[] =
@@ -182,7 +182,21 @@ CONST zclAttrRec_t zclZigUP_Attrs[] =
       ACCESS_CONTROL_READ,
       (void *)&zclZigUP_OnOff
     }
+  },
+  
+  
+  // *** Color control Cluster Attributes ***
+  {
+    ZCL_CLUSTER_ID_LIGHTING_COLOR_CONTROL,
+    { // Attribute record
+      ATTRID_LIGHTING_COLOR_CONTROL_CURRENT_X,
+      ZCL_DATATYPE_UINT16,
+      (ACCESS_CONTROL_READ | ACCESS_CONTROL_WRITE),
+      (void *)&zclZigUP_OnOff   // TODO
+    }
   }
+  
+  
 };
 
 uint8 CONST zclZigUP_NumAttributes = ( sizeof(zclZigUP_Attrs) / sizeof(zclZigUP_Attrs[0]) );
@@ -190,30 +204,29 @@ uint8 CONST zclZigUP_NumAttributes = ( sizeof(zclZigUP_Attrs) / sizeof(zclZigUP_
 /*********************************************************************
  * SIMPLE DESCRIPTOR
  */
-// This is the Cluster ID List and should be filled with Application
-// specific cluster IDs.
+// This is the Cluster ID List and should be filled with Application specific cluster IDs.
 const cId_t zclZigUP_InClusterList[] =
 {
   ZCL_CLUSTER_ID_GEN_BASIC,
   ZCL_CLUSTER_ID_GEN_IDENTIFY,
   ZCL_CLUSTER_ID_GEN_GROUPS,
   ZCL_CLUSTER_ID_GEN_SCENES,
-  ZCL_CLUSTER_ID_GEN_ON_OFF
+  ZCL_CLUSTER_ID_GEN_ON_OFF,
+  ZCL_CLUSTER_ID_LIGHTING_COLOR_CONTROL    
 };
-// work-around for compiler bug... IAR can't calculate size of array with #if options.
-#define ZCLZIGUP_MAX_INCLUSTERS   5
+#define ZCLZIGUP_MAX_INCLUSTERS (sizeof(zclZigUP_InClusterList) / sizeof(zclZigUP_InClusterList[0]))
 
 const cId_t zclZigUP_OutClusterList[] =
 {
   ZCL_CLUSTER_ID_GEN_BASIC
 };
-#define ZCLZIGUP_MAX_OUTCLUSTERS  (sizeof(zclZigUP_OutClusterList) / sizeof(zclZigUP_OutClusterList[0]))
+#define ZCLZIGUP_MAX_OUTCLUSTERS (sizeof(zclZigUP_OutClusterList) / sizeof(zclZigUP_OutClusterList[0]))
 
 SimpleDescriptionFormat_t zclZigUP_SimpleDesc[1] = {
 {
   ZIGUP_ENDPOINT,                  //  int Endpoint;
-  ZCL_HA_PROFILE_ID,                     //  uint16 AppProfId;
-  ZCL_HA_DEVICEID_ON_OFF_LIGHT,          //  uint16 AppDeviceId;
+  ZCL_HA_PROFILE_ID,               //  uint16 AppProfId;
+  ZCL_HA_DEVICEID_ON_OFF_LIGHT,    //  uint16 AppDeviceId;
   ZIGUP_DEVICE_VERSION,            //  int   AppDevVer:4;
   ZIGUP_FLAGS,                     //  int   AppFlags:4;
   ZCLZIGUP_MAX_INCLUSTERS,         //  byte  AppNumInClusters;

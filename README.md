@@ -16,8 +16,6 @@ CC2530 based multi-purpose ZigBee Relais, Switch, Sensor and Router
 * Output for one normal LED or up to 10 WS2812B/Neopixel RGB-LEDs (controllable via ZigBee)
 * Analog input to measure voltages of up to 32 Volt. (Voltage will be reported via ZigBee)
 
-Hi! I'm your first Markdown file in **StackEdit**. If you want to learn about StackEdit, you can read me. If you want to play with Markdown, you can edit me. Once you have finished with me, you can create new files by opening the **file explorer** on the left corner of the navigation bar.
-
 
 # Connection diagrams
 
@@ -34,12 +32,14 @@ Hi! I'm your first Markdown file in **StackEdit**. If you want to learn about St
 
 1. Get **Z-Stack Home 1.2.2a.44539** from http://www.ti.com/tool/Z-STACK-ARCHIVE
 2. Get **IAR Embedded Workbench for 8051** from https://www.iar.com/iar-embedded-workbench (you can use the free trial version for one month)
-3. Clone ZigUP source to **\Z-Stack Home 1.2.2a.44539\Projects\zstack\HomeAutomation\ZigUP\\**
-4. Start **\ZigUP\CC2530DB\ZigUP.ewp** to load project in IAR
+3. Clone ZigUP source to **\Projects\zstack\HomeAutomation\ZigUP\\**
+4. Start **\ZigUP\CC2530DB\ZigUP.eww** to load project in IAR
 5. Set project configuration to "Router".
-6. Compile
+6. Edit **\Projects\zstack\Tools\CC2530DB\f8wConfig.cfg** to use all 2.4 GHz channels:
+	>-DDEFAULT_CHANLIST=0x07FFF800
+7. Compile
 
 # Flashing with CC Debugger
 1. Get **SmartRF Flash Programmer v1.12.8 (not v2.x!)** from https://www.ti.com/tool/flash-programmer
-2. Load HEX-File and click "flash"
-
+2. Select "Program CCxxxx..." and "System-on-Chip" tab
+3. Load HEX-File and perform "Erase, program and verify" action

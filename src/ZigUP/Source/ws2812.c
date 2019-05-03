@@ -30,53 +30,56 @@ void WS2812_SendLED(uint8 red, uint8 green, uint8 blue)
   // delete buffer
   for (uint16 i=0; i<WS2812_buffersize; i++) WS2812_buffer[i] = 0;
   
-  uint8 i;
+  uint8 i,j;
   
-  for (i=8; i; i--)
+  for (j=0; j<10; j++)  // send identical data 10 times for up to 10 LEDs in a row
   {
-    if ((green >> (i-1)) & 1)
+    for (i=8; i; i--)
     {
-      WS2812_StoreBit(1);
-      WS2812_StoreBit(1);
-      WS2812_StoreBit(0);
+      if ((green >> (i-1)) & 1)
+      {
+        WS2812_StoreBit(1);
+        WS2812_StoreBit(1);
+        WS2812_StoreBit(0);
+      }
+      else
+      {
+        WS2812_StoreBit(1);
+        WS2812_StoreBit(0);
+        WS2812_StoreBit(0);
+      }
     }
-    else
+    for (i=8; i; i--)
     {
-      WS2812_StoreBit(1);
-      WS2812_StoreBit(0);
-      WS2812_StoreBit(0);
+      if ((red >> (i-1)) & 1)
+      {
+        WS2812_StoreBit(1);
+        WS2812_StoreBit(1);
+        WS2812_StoreBit(0);
+      }
+      else
+      {
+        WS2812_StoreBit(1);
+        WS2812_StoreBit(0);
+        WS2812_StoreBit(0);
+      }
     }
+    for (i=8; i; i--)
+    {
+      if ((blue >> (i-1)) & 1)
+      {
+        WS2812_StoreBit(1);
+        WS2812_StoreBit(1);
+        WS2812_StoreBit(0);
+      }
+      else
+      {
+        WS2812_StoreBit(1);
+        WS2812_StoreBit(0);
+        WS2812_StoreBit(0);
+      }
+    }        
   }
-  for (i=8; i; i--)
-  {
-    if ((red >> (i-1)) & 1)
-    {
-      WS2812_StoreBit(1);
-      WS2812_StoreBit(1);
-      WS2812_StoreBit(0);
-    }
-    else
-    {
-      WS2812_StoreBit(1);
-      WS2812_StoreBit(0);
-      WS2812_StoreBit(0);
-    }
-  }
-  for (i=8; i; i--)
-  {
-    if ((blue >> (i-1)) & 1)
-    {
-      WS2812_StoreBit(1);
-      WS2812_StoreBit(1);
-      WS2812_StoreBit(0);
-    }
-    else
-    {
-      WS2812_StoreBit(1);
-      WS2812_StoreBit(0);
-      WS2812_StoreBit(0);
-    }
-  }        
   
   // SPI method - a little bit jittery, but LED-Stripes seem to be okay with it
   for (uint16 j=0; j<WS2812_buffersize; j++)

@@ -1,10 +1,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <math.h>
+
+#include "zcl_lighting.h"
 #include "zcl_zigup.h"
 #include "zcl.h"
 #include "zcl_ha.h"
 #include "zcl_diagnostic.h"
+
 #include "onboard.h"
 #include "ZDSecMgr.h"
 #include "bitmasks.h"
@@ -23,12 +27,6 @@
 #define ZIGUP_REPORTING_INTERVAL 5000
 
 afAddrType_t zclZigUP_DstAddr;
-
-uint16 bindingInClusters[] =
-{
-  ZCL_CLUSTER_ID_GEN_ON_OFF
-};
-#define ZCLZIGUP_BINDINGLIST (sizeof(bindingInClusters) / sizeof(bindingInClusters[0]))
 
 // Test Endpoint to allow SYS_APP_MSGs
 static endPointDesc_t ZigUP_TestEp =
@@ -141,6 +139,50 @@ static zclGeneral_AppCallbacks_t zclZigUP_CmdCallbacks =
   NULL                                   // RSSI Location Response command
 };
 
+
+
+static zclLighting_AppCallbacks_t zclZigUP_LightingCmdCBs =
+{
+  NULL,   //Move To Hue Command
+  NULL,   //Move Hue Command
+  NULL,   //Step Hue Command
+  NULL,   //Move To Saturation Command
+  NULL,   //Move Saturation Command
+  NULL,   //Step Saturation Command
+  NULL,   //Move To Hue And Saturation  Command
+  zclZigUP_MoveToColorCB, // Move To Color Command
+  NULL,   // Move Color Command
+  NULL,   // STEP To Color Command
+  NULL,                                     // Move To Color Temperature Command
+  NULL,// Enhanced Move To Hue
+  NULL,  // Enhanced Move Hue;
+  NULL,  // Enhanced Step Hue;
+  NULL, // Enhanced Move To Hue And Saturation;
+  NULL, // Color Loop Set Command
+  NULL,        // Stop Move Step;
+
+
+/*
+  zclColor_MoveToHueCB,   //Move To Hue Command
+  zclColor_MoveHueCB,   //Move Hue Command
+  zclColor_StepHueCB,   //Step Hue Command
+  zclColor_MoveToSaturationCB,   //Move To Saturation Command
+  zclColor_MoveSaturationCB,   //Move Saturation Command
+  zclColor_StepSaturationCB,   //Step Saturation Command
+  zclColor_MoveToHueAndSaturationCB,   //Move To Hue And Saturation  Command
+  zclColor_MoveToColorCB, // Move To Color Command
+  zclColor_MoveColorCB,   // Move Color Command
+  zclColor_StepColorCB,   // STEP To Color Command
+  NULL,                                     // Move To Color Temperature Command
+  zclColor_EnhMoveToHueCB,// Enhanced Move To Hue
+  zclColor_MoveEnhHueCB,  // Enhanced Move Hue;
+  zclColor_StepEnhHueCB,  // Enhanced Step Hue;
+  zclColor_MoveToEnhHueAndSaturationCB, // Enhanced Move To Hue And Saturation;
+  zclColor_SetColorLoopCB, // Color Loop Set Command
+  zclColor_StopCB,        // Stop Move Step;
+*/  
+};
+
 /*********************************************************************
 * @fn          zclZigUP_Init
 *
@@ -165,6 +207,9 @@ void zclZigUP_Init( byte task_id )
   
   // Register the ZCL General Cluster Library callback functions
   zclGeneral_RegisterCmdCallbacks( ZIGUP_ENDPOINT, &zclZigUP_CmdCallbacks );
+
+  // Register the ZCL Lighting Cluster Library callback functions
+  zclLighting_RegisterCmdCallbacks( ZIGUP_ENDPOINT, &zclZigUP_LightingCmdCBs );
   
   // Register the application's attribute list
   zcl_registerAttrList( ZIGUP_ENDPOINT, zclZigUP_NumAttributes, zclZigUP_Attrs );
@@ -236,7 +281,7 @@ void zclZigUP_Init( byte task_id )
   else UART_String("Sensor: Low.");
   
   
-  osal_start_reload_timer( zclZigUP_TaskID, ZIGUP_REPORTING_EVT, ZIGUP_REPORTING_INTERVAL );
+  // osal_start_reload_timer( zclZigUP_TaskID, ZIGUP_REPORTING_EVT, ZIGUP_REPORTING_INTERVAL );
   
   
   UART_String("Init done.");
@@ -415,6 +460,12 @@ static void zclZigUP_OnOffCB( uint8 cmd )
 {
   afIncomingMSGPacket_t *pPtr = zcl_getRawAFMsg();
   zclZigUP_DstAddr.addr.shortAddr = pPtr->srcAddr.addr.shortAddr;
+
+  
+  char buffer[100];
+  sprintf(buffer, "CMD: %u\n", cmd);
+  UART_String(buffer); 
+  
   
   // Turn on the light
   if ( cmd == COMMAND_ON )
@@ -432,6 +483,81 @@ static void zclZigUP_OnOffCB( uint8 cmd )
     Relais(!STATE_LIGHT);
   }
 }
+
+ZStatus_t zclZigUP_MoveToColorCB( zclCCMoveToColor_t *pCmd )
+{
+  // Converts CIE color space to RGB color space
+  // from https://github.com/usolved/cie-rgb-converter/blob/master/cie_rgb_converter.js
+  
+  char buffer[100];
+  sprintf(buffer, "Light-CMD: x: %u // y: %u\n", pCmd->colorX, pCmd->colorY);
+  UART_String(buffer); 
+
+  float x = pCmd->colorX/ 65536.0; // the given x value
+  float y = pCmd->colorY/ 65536.0; // the given y value
+  
+  float z = 1.0 - x - y;
+  float Y = 1.0;
+  float X = (Y / y) * x;
+  float Z = (Y / y) * z;
+  
+  //Convert to RGB using Wide RGB D65 conversion
+  float red 	=  X * 1.656492 - Y * 0.354851 - Z * 0.255038;
+  float green 	= -X * 0.707196 + Y * 1.655397 + Z * 0.036152;
+  float blue 	=  X * 0.051713 - Y * 0.121364 + Z * 1.011530;
+  
+  //If red, green or blue is larger than 1.0 set it back to the maximum of 1.0
+  if (red > blue && red > green && red > 1.0)
+  {
+    green = green / red;
+    blue = blue / red;
+    red = 1.0;
+  }
+  else if (green > blue && green > red && green > 1.0)
+  {
+    red = red / green;
+    blue = blue / green;
+    green = 1.0;
+  }
+  else if (blue > red && blue > green && blue > 1.0)
+  {
+    red = red / blue;
+    green = green / blue;
+    blue = 1.0;
+  }
+  
+  //Reverse gamma correction
+  red 	= red <= 0.0031308 ? 12.92 * red : (1.0 + 0.055) * pow(red, (1.0 / 2.4)) - 0.055;
+  green 	= green <= 0.0031308 ? 12.92 * green : (1.0 + 0.055) * pow(green, (1.0 / 2.4)) - 0.055;
+  blue 	= blue <= 0.0031308 ? 12.92 * blue : (1.0 + 0.055) * pow(blue, (1.0 / 2.4)) - 0.055;
+  
+  
+  //Convert normalized decimal to decimal
+  red *= 255;
+  green *= 255;
+  blue *= 255;
+
+  uint8 r = (uint8)red;
+  uint8 g = (uint8)green;
+  uint8 b = (uint8)blue;
+
+  if (red > 254.5) r = 255;
+  else if (red < 0.5) r = 0;
+
+  if (green > 254.5) g = 255;
+  else if (green < 0.5) g = 0;
+
+  if (blue > 254.5) b = 255;
+  else if (blue < 0.5) b = 0;
+  
+  sprintf(buffer, "Light-CMD: r: %u // g: %u // b: %u\n", r, g, b);
+  UART_String(buffer); 
+
+  WS2812_SendLED(r, g, b);
+  
+  return ( ZSuccess );
+}
+
 
 /******************************************************************************
 *
