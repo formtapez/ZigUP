@@ -1493,6 +1493,7 @@
                     <state>xZCL_LEVEL_CTRL</state>
                     <state>ZCL_DIAGNOSTIC</state>
                     <state>FEATURE_SYSTEM_STATS</state>
+                    <state>ZCL_DOORLOCK</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -4721,6 +4722,12 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\Source\ws2812.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\zcl\zcl_closures.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\zcl\zcl_closures.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\zcl\zcl_lighting.c</name>

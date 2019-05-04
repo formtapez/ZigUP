@@ -15,7 +15,7 @@ CC2530 based multi-purpose ZigBee Relais, Switch, Sensor and Router
 * Input for S0-Bus impulses from power-, water- or gas-meters. Count-Value will be reported via ZigBee)
 * Output for one normal LED or up to 10 WS2812B/Neopixel RGB-LEDs (controllable via ZigBee)
 * Analog input to measure voltages of up to 32 Volt. (Voltage will be reported via ZigBee)
-
+* Fully equipped debug-port to allow CC Debugger flashing and packet sniffing
 
 # Connection diagrams
 
@@ -41,5 +41,13 @@ CC2530 based multi-purpose ZigBee Relais, Switch, Sensor and Router
 
 # Flashing with CC Debugger
 1. Get **SmartRF Flash Programmer v1.12.8 (not v2.x!)** from https://www.ti.com/tool/flash-programmer
-2. Select "Program CCxxxx..." and "System-on-Chip" tab
-3. Load HEX-File and perform "Erase, program and verify" action
+2. Connect CC Debugger to the Debug-Port of ZigUP with an 1:1 cable.
+3. Select "Program CCxxxx..." and "System-on-Chip" tab
+4. Load HEX-File and perform "Erase, program and verify" action
+
+# Packet Sniffing using CC Debugger
+1. Get **PACKET-SNIFFER v2.18.1 (not SNIFFER-2 v1.x!)** from http://www.ti.com/tool/PACKET-SNIFFER
+2. Connect CC Debugger to the Debug-Port of ZigUP with an 1:1 cable.
+3. Select protocol "IEEE 802.15.4/ZigBee" and click "Start"
+4. Change radio channel and click "Start"
+5. Re-flash ZigUP firmware when you are done. Because it was replaced by a sniffer-firmware.

@@ -4,6 +4,7 @@
 #include <math.h>
 
 #include "zcl_lighting.h"
+#include "zcl_closures.h"
 #include "zcl_zigup.h"
 #include "zcl.h"
 #include "zcl_ha.h"
@@ -112,11 +113,11 @@ void zclZigUP_Reporting(void)
 */
 static zclGeneral_AppCallbacks_t zclZigUP_CmdCallbacks =
 {
-  zclZigUP_BasicResetCB,            // Basic Cluster Reset command
-  zclZigUP_IdentifyCB,              // Identify command
+  zclZigUP_BasicResetCB,                  // Basic Cluster Reset command
+  zclZigUP_IdentifyCB,                    // Identify command
   NULL,                                   // Identify Trigger Effect command
-  zclZigUP_IdentifyQueryRspCB,      // Identify Query Response command
-  zclZigUP_OnOffCB,                 // On/Off cluster commands
+  zclZigUP_IdentifyQueryRspCB,            // Identify Query Response command
+  zclZigUP_OnOffCB,                       // On/Off cluster commands
   NULL,                                   // On/Off cluster enhanced command Off with Effect
   NULL,                                   // On/Off cluster enhanced command On with Recall Global Scene
   NULL,                                   // On/Off cluster enhanced command On with Timed Off
@@ -124,64 +125,96 @@ static zclGeneral_AppCallbacks_t zclZigUP_CmdCallbacks =
   NULL,                                   // Group Response commands
 #endif
 #ifdef ZCL_SCENES
-  NULL,                                  // Scene Store Request command
-  NULL,                                  // Scene Recall Request command
-  NULL,                                  // Scene Response command
+  NULL,                                   // Scene Store Request command
+  NULL,                                   // Scene Recall Request command
+  NULL,                                   // Scene Response command
 #endif
 #ifdef ZCL_ALARMS
-  NULL,                                  // Alarm (Response) commands
+  NULL,                                   // Alarm (Response) commands
 #endif
 #ifdef SE_UK_EXT
-  NULL,                                  // Get Event Log command
-  NULL,                                  // Publish Event Log command
+  NULL,                                   // Get Event Log command
+  NULL,                                   // Publish Event Log command
 #endif
-  NULL,                                  // RSSI Location command
-  NULL                                   // RSSI Location Response command
+  NULL,                                   // RSSI Location command
+  NULL                                    // RSSI Location Response command
 };
-
-
 
 static zclLighting_AppCallbacks_t zclZigUP_LightingCmdCBs =
 {
-  NULL,   //Move To Hue Command
-  NULL,   //Move Hue Command
-  NULL,   //Step Hue Command
-  NULL,   //Move To Saturation Command
-  NULL,   //Move Saturation Command
-  NULL,   //Step Saturation Command
-  NULL,   //Move To Hue And Saturation  Command
-  zclZigUP_MoveToColorCB, // Move To Color Command
-  NULL,   // Move Color Command
-  NULL,   // STEP To Color Command
-  NULL,                                     // Move To Color Temperature Command
-  NULL,// Enhanced Move To Hue
-  NULL,  // Enhanced Move Hue;
-  NULL,  // Enhanced Step Hue;
-  NULL, // Enhanced Move To Hue And Saturation;
-  NULL, // Color Loop Set Command
-  NULL,        // Stop Move Step;
-
-
-/*
-  zclColor_MoveToHueCB,   //Move To Hue Command
-  zclColor_MoveHueCB,   //Move Hue Command
-  zclColor_StepHueCB,   //Step Hue Command
-  zclColor_MoveToSaturationCB,   //Move To Saturation Command
-  zclColor_MoveSaturationCB,   //Move Saturation Command
-  zclColor_StepSaturationCB,   //Step Saturation Command
-  zclColor_MoveToHueAndSaturationCB,   //Move To Hue And Saturation  Command
-  zclColor_MoveToColorCB, // Move To Color Command
-  zclColor_MoveColorCB,   // Move Color Command
-  zclColor_StepColorCB,   // STEP To Color Command
-  NULL,                                     // Move To Color Temperature Command
-  zclColor_EnhMoveToHueCB,// Enhanced Move To Hue
-  zclColor_MoveEnhHueCB,  // Enhanced Move Hue;
-  zclColor_StepEnhHueCB,  // Enhanced Step Hue;
-  zclColor_MoveToEnhHueAndSaturationCB, // Enhanced Move To Hue And Saturation;
-  zclColor_SetColorLoopCB, // Color Loop Set Command
-  zclColor_StopCB,        // Stop Move Step;
-*/  
+  NULL,                         // Move To Hue Command
+  NULL,                         // Move Hue Command
+  NULL,                         // Step Hue Command
+  NULL,                         // Move To Saturation Command
+  NULL,                         // Move Saturation Command
+  NULL,                         // Step Saturation Command
+  NULL,                         // Move To Hue And Saturation  Command
+  zclZigUP_MoveToColorCB,       // Move To Color Command
+  NULL,                         // Move Color Command
+  NULL,                         // STEP To Color Command
+  NULL,                         // Move To Color Temperature Command
+  NULL,                         // Enhanced Move To Hue
+  NULL,                         // Enhanced Move Hue;
+  NULL,                         // Enhanced Step Hue;
+  NULL,                         // Enhanced Move To Hue And Saturation;
+  NULL,                         // Color Loop Set Command
+  NULL,                         // Stop Move Step;
 };
+
+static zclClosures_DoorLockAppCallbacks_t zclZigUP_DoorLockCmdCallbacks =
+{
+  zclZigUP_DoorLockCB,                           // DoorLock cluster command
+  zclZigUP_DoorLockRspCB,                        // DoorLock Response
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL
+};
+
 
 /*********************************************************************
 * @fn          zclZigUP_Init
@@ -210,6 +243,9 @@ void zclZigUP_Init( byte task_id )
 
   // Register the ZCL Lighting Cluster Library callback functions
   zclLighting_RegisterCmdCallbacks( ZIGUP_ENDPOINT, &zclZigUP_LightingCmdCBs );
+
+  // Register the ZCL DoorLock Cluster Library callback function
+  zclClosures_RegisterDoorLockCmdCallbacks( ZIGUP_ENDPOINT, &zclZigUP_DoorLockCmdCallbacks );
   
   // Register the application's attribute list
   zcl_registerAttrList( ZIGUP_ENDPOINT, zclZigUP_NumAttributes, zclZigUP_Attrs );
@@ -556,6 +592,66 @@ ZStatus_t zclZigUP_MoveToColorCB( zclCCMoveToColor_t *pCmd )
   WS2812_SendLED(r, g, b);
   
   return ( ZSuccess );
+}
+
+/*********************************************************************
+ * @fn      zclZigUP_DoorLockCB
+ *
+ * @brief   Callback from the ZCL General Cluster Library when
+ *          it received an Door Lock cluster Command for this application.
+ *
+ * @param   pInMsg - process incoming message
+ * @param   pInCmd - PIN/RFID code of command
+ *
+ * @return  ZStatus_t
+ */
+static ZStatus_t zclZigUP_DoorLockCB ( zclIncoming_t *pInMsg, zclDoorLock_t *pInCmd )
+{
+  // LED OFF - Lock the door
+  if ( pInMsg->hdr.commandID == COMMAND_CLOSURES_LOCK_DOOR )
+  {
+    LED(0);
+    zclClosures_SendDoorLockStatusResponse( pInMsg->msg->endPoint, &pInMsg->msg->srcAddr, COMMAND_CLOSURES_LOCK_DOOR, ZCL_STATUS_SUCCESS, TRUE, pInMsg->hdr.transSeqNum );
+  }
+  
+  // LED ON - Unlock the door
+  else if ( pInMsg->hdr.commandID == COMMAND_CLOSURES_UNLOCK_DOOR )
+  {
+    LED(1);
+    zclClosures_SendDoorLockStatusResponse( pInMsg->msg->endPoint, &pInMsg->msg->srcAddr, COMMAND_CLOSURES_UNLOCK_DOOR, ZCL_STATUS_SUCCESS, TRUE, pInMsg->hdr.transSeqNum );
+  }
+  
+  // Toggle the door
+  else if ( pInMsg->hdr.commandID == COMMAND_CLOSURES_TOGGLE_DOOR )
+  {
+    LED(!STATE_LED);
+    zclClosures_SendDoorLockStatusResponse( pInMsg->msg->endPoint, &pInMsg->msg->srcAddr, COMMAND_CLOSURES_TOGGLE_DOOR, ZCL_STATUS_SUCCESS, TRUE, pInMsg->hdr.transSeqNum );
+  }
+  
+  else
+  {
+    return ( ZCL_STATUS_FAILURE );  // invalid command
+  }
+  
+  return ( ZCL_STATUS_CMD_HAS_RSP );
+}
+
+/*********************************************************************
+ * @fn      zclZigUP_DoorLockRspCB
+ *
+ * @brief   Callback from the ZCL General Cluster Library when
+ *          it received an Door Lock response for this application.
+ *
+ * @param   cmd - Command ID
+ * @param   srcAddr - Requestor's address
+ * @param   transSeqNum - Transaction sequence number
+ * @param   status - status response from server's door lock cmd
+ *
+ * @return  ZStatus_t
+ */
+static ZStatus_t zclZigUP_DoorLockRspCB ( zclIncoming_t *pInMsg, uint8 status )
+{
+  return ( ZCL_STATUS_SUCCESS );
 }
 
 

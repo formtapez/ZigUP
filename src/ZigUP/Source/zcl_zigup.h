@@ -9,7 +9,8 @@ extern "C"
 #include "zcl.h"
 #include "zcl_general.h"
 #include "zcl_lighting.h"
-
+#include "zcl_closures.h"
+  
 #define ZIGUP_ENDPOINT            8
 
 #define LIGHT_OFF                       0x00
@@ -57,7 +58,8 @@ static void zclZigUP_IdentifyCB( zclIdentify_t *pCmd );
 static void zclZigUP_IdentifyQueryRspCB( zclIdentifyQueryRsp_t *pRsp );
 static void zclZigUP_OnOffCB( uint8 cmd );
 ZStatus_t zclZigUP_MoveToColorCB( zclCCMoveToColor_t *pCmd );
-
+static ZStatus_t zclZigUP_DoorLockCB ( zclIncoming_t *pInMsg, zclDoorLock_t *pInCmd );
+static ZStatus_t zclZigUP_DoorLockRspCB ( zclIncoming_t *pInMsg, uint8 status );
 
 static void zclZigUP_ProcessIdentifyTimeChange( void );
 

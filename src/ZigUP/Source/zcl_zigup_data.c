@@ -20,6 +20,8 @@
 
 #include "zcl_zigup.h"
 
+#include "global.h"
+
 #define ZIGUP_DEVICE_VERSION     0
 #define ZIGUP_FLAGS              0
 
@@ -180,7 +182,7 @@ CONST zclAttrRec_t zclZigUP_Attrs[] =
       ATTRID_ON_OFF,
       ZCL_DATATYPE_BOOLEAN,
       ACCESS_CONTROL_READ,
-      (void *)&zclZigUP_OnOff
+      (void *)&zclZigUP_OnOff   // TODO
     }
   },
   
