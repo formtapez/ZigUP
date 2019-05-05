@@ -14,13 +14,15 @@ int DHT22_Measure(void)
   uint8 counter = 0;
   uint8 checksum = 0;
   uint8 dht22_data[5];
-  
-  /*  
+
+//#define ZIGUP_DHT22_DEBUG  
+
+#ifdef ZIGUP_DHT22_DEBUG
   uint8 dht22_debug[100];
   uint8 debugcnt;
   for(debugcnt = 0; debugcnt < 100; debugcnt++) dht22_debug[debugcnt] = 0;
   debugcnt = 0;
-  */  
+#endif    
   
   P0DIR |= (1<<7);     // output
   P0_7 = 1;
@@ -47,32 +49,35 @@ int DHT22_Measure(void)
     if((i >= 4) && ((i % 2) != 0))
     {
       dht22_data[j / 8] <<= 1;
-      //      dht22_debug[debugcnt++] = counter;
-      if(counter > 20)  // detect "1" bit time
+#ifdef ZIGUP_DHT22_DEBUG
+      dht22_debug[debugcnt++] = counter;
+#endif
+      if(counter > 9)  // detect "1" bit time
       {
         dht22_data[j / 8] |= 1;
       }
       j++;
     }
   }
-  
+
   char buffer[100];
-  /*
+
+#ifdef ZIGUP_DHT22_DEBUG
   sprintf(buffer, "j: %u", j);
   UART_String(buffer); 
   
   for(i = 0; i < 5; i++)
   {
-  sprintf(buffer, "DHT22: (%u) %u\n", i, dht22_data[i]);
-  UART_String(buffer); 
-}
+    sprintf(buffer, "DHT22: (%u) %u\n", i, dht22_data[i]);
+    UART_String(buffer); 
+  }
   
   for(debugcnt = 0; debugcnt < 100; debugcnt++)
   {
-  sprintf(buffer, "DHT22 Debug: (%u) %u\n", debugcnt, dht22_debug[debugcnt]);
-  UART_String(buffer); 
-}
-  */  
+    sprintf(buffer, "DHT22 Debug: (%u) %u\n", debugcnt, dht22_debug[debugcnt]);
+    UART_String(buffer); 
+  }
+#endif    
   
   // If we have 5 bytes (40 bits), wrap-up and end
   if(j >= 40)

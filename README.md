@@ -46,7 +46,7 @@ CC2530 based multi-purpose ZigBee Relais, Switch, Sensor and Router
 4. Load HEX-File and perform "Erase, program and verify" action
 
 # Packet Sniffing using CC Debugger
-1. Get **PACKET-SNIFFER v2.18.1 (not SNIFFER-2 v1.x!)** from http://www.ti.com/tool/PACKET-SNIFFER
+1. Get **PACKET-SNIFFER v2.18.1 (not SNIFFER-2 v1.x!)** from https://www.ti.com/tool/PACKET-SNIFFER
 2. Connect CC Debugger to the Debug-Port of ZigUP with an 1:1 cable.
 3. Select protocol "IEEE 802.15.4/ZigBee" and click "Start"
 4. Change radio channel and click "Start"

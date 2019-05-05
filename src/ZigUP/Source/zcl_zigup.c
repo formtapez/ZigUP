@@ -45,14 +45,13 @@ void Measure(void)
   ADC_Voltage = ADC_GetVoltage();
   CPU_Temperature = ADC_GetTemperature();
   
-  if (!DHT22_Measure())
-  {
-    EXT_Humidity = -1000;
-    if (!ds18b20_get_temp())
-    {
-      EXT_Temperature = -1000;
-    }
-  }
+  // invalidate old measurements
+  EXT_Temperature = -1000;
+  EXT_Humidity = -1000;
+
+  // make new measurement depending of autodetected sensor type
+  if (TEMP_SENSOR == 1) DHT22_Measure();
+  else if (TEMP_SENSOR == 2) ds18b20_get_temp();
 }
 
 void zclZigUP_Reporting(void)
@@ -313,17 +312,23 @@ void zclZigUP_Init( byte task_id )
   //  WS2812_SendLED(0, 0, 0);
   UART_Init();
   
-  if (P0_7) UART_String("Sensor: High.");
-  else UART_String("Sensor: Low.");
-  
+  // autodetecting sensor type
+  if (DHT22_Measure())
+  {
+    TEMP_SENSOR = 1;
+    UART_String("Sensor type DHT22 detected.");
+  }
+  else if (ds18b20_get_temp())
+  {
+    TEMP_SENSOR = 2;
+    UART_String("Sensor type DS18B20 detected.");
+  }
+  else UART_String("No sensor detected.");
+
   
   // osal_start_reload_timer( zclZigUP_TaskID, ZIGUP_REPORTING_EVT, ZIGUP_REPORTING_INTERVAL );
   
-  
   UART_String("Init done.");
-  
-  
-  
 }
 
 /*********************************************************************

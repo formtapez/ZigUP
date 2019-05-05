@@ -12,3 +12,5 @@ extern uint16 zclZigUPSeqNum;
 extern volatile uint32 S0;
 extern volatile uint8 STATE_LIGHT;
 extern volatile uint8 STATE_LED;
+
+extern uint8 TEMP_SENSOR;
