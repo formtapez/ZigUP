@@ -84,14 +84,19 @@ uint8 ds18b20_get_temp(void)
     temp1=ds18b20_read_byte();
     temp2=ds18b20_read_byte();
     ds18b20_RST_PULSE();
-    EXT_Temperature = ((uint16)temp1 | (uint16)(temp2 & b00000111) << 8) / 16.0;
+    
+    if (temp1 == 0xff && temp2 == 0xff)
+    {
+      UART_String("DS18B20: No sensor found."); 
+      return 0;
+    }
     
     // neg. temp
     if (temp2 & b00001000) EXT_Temperature = ((uint16)temp1 | (uint16)(temp2 & b00000111) << 8) / 16.0 - 128.0;
     // pos. temp
     else EXT_Temperature = ((uint16)temp1 | (uint16)(temp2 & b00000111) << 8) / 16.0;
     
-    sprintf(buffer, "DS18B20: %.2f °C\n", EXT_Temperature);
+    sprintf(buffer, "DS18B20: %.2f °C (0x%02X 0x%02X)\n", EXT_Temperature, temp1, temp2);
     UART_String(buffer); 
     return 1;
   }

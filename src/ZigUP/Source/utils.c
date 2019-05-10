@@ -4,6 +4,9 @@
 #include "uart.h"
 #include "global.h"
 #include "utils.h"
+#include "ds18b20.h"
+#include "adc.h"
+#include "dht22.h"
 
 void FactoryReset(void)
 {
@@ -23,16 +26,30 @@ void Relais(uint8 state)
   {
     P1_1 = 1;   // activate ON-solenoid
     P1_2 = 0;   // deactivate OFF-solenoid
-    _delay_ms(250);
+    _delay_ms(50);
     P1_1 = 0;   // deactivate ON-solenoid
   }
   else	// Switch light off
   {
     P1_1 = 0;   // deactivate ON-solenoid
     P1_2 = 1;   // activate OFF-solenoid
-    _delay_ms(250);
+    _delay_ms(50);
     P1_2 = 0;   // deactivate OFF-solenoid
   }
   
   STATE_LIGHT = state;
+}
+
+void Measure_QuickStuff(void)
+{
+  DIG_IN = P2_0;
+  ADC_Voltage = ADC_GetVoltage();
+  CPU_Temperature = ADC_GetTemperature();
+}
+
+void Measure_Sensor(void)
+{
+  // make new measurement depending of autodetected sensor type
+  if (TEMP_SENSOR == 1) DHT22_Measure();
+  else if (TEMP_SENSOR == 2) ds18b20_get_temp();
 }

@@ -13,7 +13,6 @@ void UART_Init(void)
 
 void UART_Transmit(char data)
 {
-  
   U0DBUF = data;
   while (U0CSR & (1<<0)); // wait until byte has been sent
 }

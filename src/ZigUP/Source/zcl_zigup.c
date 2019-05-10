@@ -25,7 +25,7 @@
 #include "dht22.h"
 #include "utils.h"
 
-#define ZIGUP_REPORTING_INTERVAL 5000
+#define ZIGUP_REPORTING_INTERVAL 30000
 
 afAddrType_t zclZigUP_DstAddr;
 
@@ -40,23 +40,9 @@ static endPointDesc_t ZigUP_TestEp =
 
 devStates_t zclZigUP_NwkState = DEV_INIT;
 
-void Measure(void)
+void zclZigUP_Reporting(uint16 REPORT_REASON)
 {
-  ADC_Voltage = ADC_GetVoltage();
-  CPU_Temperature = ADC_GetTemperature();
-  
-  // invalidate old measurements
-  EXT_Temperature = -1000;
-  EXT_Humidity = -1000;
-
-  // make new measurement depending of autodetected sensor type
-  if (TEMP_SENSOR == 1) DHT22_Measure();
-  else if (TEMP_SENSOR == 2) ds18b20_get_temp();
-}
-
-void zclZigUP_Reporting(void)
-{
-#define NUM_ATTRIBUTES  7
+  const uint8 NUM_ATTRIBUTES = 8;
   
   // send report
   zclReportCmd_t *pReportCmd;
@@ -93,7 +79,11 @@ void zclZigUP_Reporting(void)
     pReportCmd->attrList[6].attrID = ATTRID_DIG_INPUT;
     pReportCmd->attrList[6].dataType = ZCL_DATATYPE_UINT16; // boolean or uint8 causes every second report to hang...
     pReportCmd->attrList[6].attrData = (void *)(&DIG_IN);
-    
+
+    pReportCmd->attrList[7].attrID = ATTRID_REPORT_REASON;
+    pReportCmd->attrList[7].dataType = ZCL_DATATYPE_UINT16;
+    pReportCmd->attrList[7].attrData = (void *)(&REPORT_REASON);
+      
     zclZigUP_DstAddr.addrMode = (afAddrMode_t)Addr16Bit;
     zclZigUP_DstAddr.addr.shortAddr = 0;
     zclZigUP_DstAddr.endPoint=1;
@@ -103,8 +93,6 @@ void zclZigUP_Reporting(void)
   
   osal_mem_free( pReportCmd );
 }
-
-
 
 
 /*********************************************************************
@@ -305,12 +293,21 @@ void zclZigUP_Init( byte task_id )
   U1GCR = b00010000;                    // UART1 Baud_E
   U1BAUD = b01000000;                   // UART1 Baud_M
   
+  UART_Init();
   
   _delay_ms(GetRandomNumber()); // Random delay
   
+  // Turn all lights off
   Relais(0);
-  //  WS2812_SendLED(0, 0, 0);
-  UART_Init();
+  WS2812_SendLED(0, 0, 0);
+  LED(0);
+
+  // invalidate float values by "assigning" NaN
+  // they will be filled later if sensors are present
+  EXT_Temperature = *(float*)&float_NaN;
+  EXT_Humidity = *(float*)&float_NaN;
+  ADC_Voltage = *(float*)&float_NaN;
+  CPU_Temperature = *(float*)&float_NaN;
   
   // autodetecting sensor type
   if (DHT22_Measure())
@@ -325,8 +322,8 @@ void zclZigUP_Init( byte task_id )
   }
   else UART_String("No sensor detected.");
 
-  
-  // osal_start_reload_timer( zclZigUP_TaskID, ZIGUP_REPORTING_EVT, ZIGUP_REPORTING_INTERVAL );
+  // start measurement task for reporting of values
+  osal_start_reload_timer( zclZigUP_TaskID, ZIGUP_REPORTING_EVT, ZIGUP_REPORTING_INTERVAL );
   
   UART_String("Init done.");
 }
@@ -390,10 +387,11 @@ uint16 zclZigUP_event_loop( uint8 task_id, uint16 events )
   if ( events & ZIGUP_REPORTING_EVT )
   {
     // update measurements
-    Measure();
+    Measure_QuickStuff();
+    Measure_Sensor();
     
     // report states
-    zclZigUP_Reporting();
+    zclZigUP_Reporting(REPORT_REASON_TIMER);
     
     return ( events ^ ZIGUP_REPORTING_EVT );
   }    

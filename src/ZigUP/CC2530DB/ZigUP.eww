@@ -9,22 +9,8 @@
       <name>ALL</name>
       <member>
         <project>ZigUP</project>
-        <configuration>CoordinatorEB</configuration>
-      </member>
-      <member>
-        <project>ZigUP</project>
         <configuration>RouterEB</configuration>
-      </member>
-      <member>
-        <project>ZigUP</project>
-        <configuration>EndDeviceEB</configuration>
-      </member>
-      <member>
-        <project>ZigUP</project>
-        <configuration>RouterZLight</configuration>
       </member>
     </batchDefinition>
   </batchBuild>
 </workspace>
-
-

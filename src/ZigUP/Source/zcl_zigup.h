@@ -27,6 +27,7 @@ extern "C"
 #define ATTRID_S0_COUNTS        41364
 #define ATTRID_ADC_VOLT         41365
 #define ATTRID_DIG_INPUT        41366
+#define ATTRID_REPORT_REASON    41367
 
 extern SimpleDescriptionFormat_t zclZigUP_SimpleDesc[];
 
@@ -49,9 +50,7 @@ void FactoryReset(void);
 
 void Relais(uint8 state);
 void LED(uint8 state);
-void zclZigUP_Reporting(void);
-void Measure(void);
-
+void zclZigUP_Reporting(uint16 REPORT_REASON);
 
 static void zclZigUP_BasicResetCB( void );
 static void zclZigUP_IdentifyCB( zclIdentify_t *pCmd );
