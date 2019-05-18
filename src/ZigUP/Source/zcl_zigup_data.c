@@ -32,8 +32,8 @@
 const uint8 zclZigUP_HWRevision = ZIGUP_HWVERSION;
 const uint8 zclZigUP_ZCLVersion = ZIGUP_ZCLVERSION;
 const uint8 zclZigUP_ManufacturerName[] = { 9, 'f','o','r','m','t','a','p','e','z' };
-const uint8 zclZigUP_ModelId[] = { 9, 'Z','i','g','B','e','e',' ','U','P' };
-const uint8 zclZigUP_DateCode[] = { 16, '2','0','1','9','0','4','0','6',' ',' ',' ',' ',' ',' ',' ',' ' };
+const uint8 zclZigUP_ModelId[] = { 5, 'Z','i','g','U','P' };
+const uint8 zclZigUP_DateCode[] = { 16, '2','0','1','9','0','5','1','8',' ',' ',' ',' ',' ',' ',' ',' ' };
 const uint8 zclZigUP_PowerSource = POWER_SOURCE_MAINS_1_PHASE;
 
 uint8 zclZigUP_LocationDescription[17] = { 16, ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ' };
@@ -75,8 +75,8 @@ CONST uint8 zclCmdsArraySize = ( sizeof(zclZigUP_Cmds) / sizeof(zclZigUP_Cmds[0]
 #endif // ZCL_DISCOVER
 
 /*********************************************************************
- * ATTRIBUTE DEFINITIONS - Uses REAL cluster IDs
- */
+* ATTRIBUTE DEFINITIONS - Uses REAL cluster IDs
+*/
 CONST zclAttrRec_t zclZigUP_Attrs[] =
 {
   // *** General Basic Cluster Attributes ***
@@ -161,7 +161,7 @@ CONST zclAttrRec_t zclZigUP_Attrs[] =
       (void *)&zclZigUP_DeviceEnable
     }
   },
-
+  
 #ifdef ZCL_IDENTIFY
   // *** Identify Cluster Attribute ***
   {
@@ -174,7 +174,7 @@ CONST zclAttrRec_t zclZigUP_Attrs[] =
     }
   },
 #endif
-
+  
   // *** On/Off Cluster Attributes ***
   {
     ZCL_CLUSTER_ID_GEN_ON_OFF,
@@ -196,16 +196,27 @@ CONST zclAttrRec_t zclZigUP_Attrs[] =
       (ACCESS_CONTROL_READ | ACCESS_CONTROL_WRITE),
       (void *)&zclZigUP_OnOff   // TODO
     }
-  }
+  },
   
+  
+  // *** Door lock Cluster Attributes (for LED) ***
+  {
+    ZCL_CLUSTER_ID_CLOSURES_DOOR_LOCK,
+    { // Attribute record
+      ATTRID_CLOSURES_LOCK_STATE,
+      ZCL_DATATYPE_ENUM8,
+      (ACCESS_CONTROL_READ | ACCESS_REPORTABLE),
+      (void *)&STATE_LED
+    }
+  }
   
 };
 
 uint8 CONST zclZigUP_NumAttributes = ( sizeof(zclZigUP_Attrs) / sizeof(zclZigUP_Attrs[0]) );
 
 /*********************************************************************
- * SIMPLE DESCRIPTOR
- */
+* SIMPLE DESCRIPTOR
+*/
 // This is the Cluster ID List and should be filled with Application specific cluster IDs.
 const cId_t zclZigUP_InClusterList[] =
 {
@@ -214,7 +225,8 @@ const cId_t zclZigUP_InClusterList[] =
   ZCL_CLUSTER_ID_GEN_GROUPS,
   ZCL_CLUSTER_ID_GEN_SCENES,
   ZCL_CLUSTER_ID_GEN_ON_OFF,
-  ZCL_CLUSTER_ID_LIGHTING_COLOR_CONTROL    
+  ZCL_CLUSTER_ID_LIGHTING_COLOR_CONTROL,
+  ZCL_CLUSTER_ID_CLOSURES_DOOR_LOCK
 };
 #define ZCLZIGUP_MAX_INCLUSTERS (sizeof(zclZigUP_InClusterList) / sizeof(zclZigUP_InClusterList[0]))
 
@@ -225,15 +237,15 @@ const cId_t zclZigUP_OutClusterList[] =
 #define ZCLZIGUP_MAX_OUTCLUSTERS (sizeof(zclZigUP_OutClusterList) / sizeof(zclZigUP_OutClusterList[0]))
 
 SimpleDescriptionFormat_t zclZigUP_SimpleDesc[1] = {
-{
-  ZIGUP_ENDPOINT,                  //  int Endpoint;
-  ZCL_HA_PROFILE_ID,               //  uint16 AppProfId;
-  ZCL_HA_DEVICEID_ON_OFF_LIGHT,    //  uint16 AppDeviceId;
-  ZIGUP_DEVICE_VERSION,            //  int   AppDevVer:4;
-  ZIGUP_FLAGS,                     //  int   AppFlags:4;
-  ZCLZIGUP_MAX_INCLUSTERS,         //  byte  AppNumInClusters;
-  (cId_t *)zclZigUP_InClusterList, //  byte *pAppInClusterList;
-  ZCLZIGUP_MAX_OUTCLUSTERS,        //  byte  AppNumInClusters;
-  (cId_t *)zclZigUP_OutClusterList //  byte *pAppInClusterList;
-}
+  {
+    ZIGUP_ENDPOINT,                  //  int Endpoint;
+    ZCL_HA_PROFILE_ID,               //  uint16 AppProfId;
+    ZCL_HA_DEVICEID_ON_OFF_LIGHT,    //  uint16 AppDeviceId;
+    ZIGUP_DEVICE_VERSION,            //  int   AppDevVer:4;
+    ZIGUP_FLAGS,                     //  int   AppFlags:4;
+    ZCLZIGUP_MAX_INCLUSTERS,         //  byte  AppNumInClusters;
+    (cId_t *)zclZigUP_InClusterList, //  byte *pAppInClusterList;
+    ZCLZIGUP_MAX_OUTCLUSTERS,        //  byte  AppNumInClusters;
+    (cId_t *)zclZigUP_OutClusterList //  byte *pAppInClusterList;
+  }
 };

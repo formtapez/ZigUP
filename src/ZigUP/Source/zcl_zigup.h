@@ -46,10 +46,6 @@ extern uint8  zclZigUP_IdentifyCommissionState;
 // OnOff attributes
 extern uint8  zclZigUP_OnOff;
 
-void FactoryReset(void);
-
-void Relais(uint8 state);
-void LED(uint8 state);
 void zclZigUP_Reporting(uint16 REPORT_REASON);
 
 static void zclZigUP_BasicResetCB( void );
