@@ -1,11 +1,12 @@
 ﻿# ZigUP
 CC2530 based multi-purpose ZigBee Relais, Switch, Sensor and Router
 
-![Image of ZigUP board](Pictures/top2.jpg)
+![Image of ZigUP board](https://github.com/formtapez/ZigUP/raw/master/Pictures/top2.jpg)
+[Bottom side](https://raw.githubusercontent.com/formtapez/ZigUP/master/Pictures/bottom.jpg)
 
 # Features
 
-* Small enough to fit under a normal lightswitch in an european flush-mounted box ("Unterputzdose" - That´s the UP in ZigUP)
+* [Small enough to fit under a normal lightswitch](https://raw.githubusercontent.com/formtapez/ZigUP/master/Pictures/size.jpg) in an european flush-mounted box ("Unterputzdose" - That´s the UP in ZigUP)
 * integrated ZigBee Router (extends the range of all your other devices)
 * Powerful bistable relais for up to 10 amps load
 * 2 Inputs for switches/buttons:
@@ -19,14 +20,14 @@ CC2530 based multi-purpose ZigBee Relais, Switch, Sensor and Router
 
 # Connection diagrams
 
-![Power and Light connections](Pictures/connection_Light.png)
-![Switch connections](Pictures/connection_Switch.png)
-![S0 connections](Pictures/connection_S0.png)
-![DHT22 connections](Pictures/connection_DHT22.png)
-![DS18B20 connections](Pictures/connection_DS18B20.png)
-![ADC connections](Pictures/connection_ADC.png)
-![LED connections](Pictures/connection_LED.png)
-![WS2812B connections](Pictures/connection_WS2812B.png)
+![Power and Light connections](https://github.com/formtapez/ZigUP/raw/master/Pictures/connection_Light.png)
+![Switch connections](https://github.com/formtapez/ZigUP/raw/master/Pictures/connection_Switch.png)
+![S0 connections](https://github.com/formtapez/ZigUP/raw/master/Pictures/connection_S0.png)
+![DHT22 connections](https://github.com/formtapez/ZigUP/raw/master/Pictures/connection_DHT22.png)
+![DS18B20 connections](https://github.com/formtapez/ZigUP/raw/master/Pictures/connection_DS18B20.png)
+![ADC connections](https://github.com/formtapez/ZigUP/raw/master/Pictures/connection_ADC.png)
+![LED connections](https://github.com/formtapez/ZigUP/raw/master/Pictures/connection_LED.png)
+![WS2812B connections](https://github.com/formtapez/ZigUP/raw/master/Pictures/connection_WS2812B.png)
 
 # Compilation
 
@@ -45,8 +46,33 @@ CC2530 based multi-purpose ZigBee Relais, Switch, Sensor and Router
 4. Load HEX-File and perform "Erase, program and verify" action
 
 # Packet Sniffing using CC Debugger
+As an alternative usage of this board, it can be used as a ZigBee packet-sniffer in combination with the CC Debugger.
 1. Get **PACKET-SNIFFER v2.18.1 (not SNIFFER-2 v1.x!)** from https://www.ti.com/tool/PACKET-SNIFFER
 2. Connect CC Debugger to the Debug-Port of ZigUP with an 1:1 cable.
 3. Select protocol "IEEE 802.15.4/ZigBee" and click "Start"
 4. Change radio channel and click "Start"
-5. Re-flash ZigUP firmware when you are done. Because it was replaced by a sniffer-firmware.
+5. Re-flash ZigUP firmware when you are done, because it was replaced by a sniffer-firmware.
+
+
+# Bill of Materials (BOM)
+
+Qty | Value | Package | Parts | URL (exemplary supplier)
+:--:|:----- |:------- |:------|:------------------------
+5 | 100 | R0805 | R1, R3, R5, R9, R10 | https://uk.farnell.com/multicomp/mcwr08x1000ftl/res-100r-1-0-125w-0805-thick-film/dp/2447552
+1 | 1k | R0805 | R8 | https://uk.farnell.com/multicomp/mcsr08x102-jtl/res-1k-5-0-125w-0805-ceramic/dp/2074338
+3 | 10k | R0805 | R2, R4, R6 | https://uk.farnell.com/multicomp/mcwr08x1002ftl/res-10k-1-0-125w-0805-thick-film/dp/2447553
+1 | 27k | R0805 | R7 | https://uk.farnell.com/multicomp/mcwr08x2702ftl/res-27k-1-0-125w-thick-film/dp/2447620
+2 | 100n | C0805 | C4, C5 | https://uk.farnell.com/multicomp/mcu0805r104kct/cap-0-1-f-50v-10-x7r-0805/dp/9406387
+3 | 10µ | C0805 | C1, C3, C6 | https://uk.farnell.com/murata/grm21br61e106ma73l/cap-10-f-25v-20-x5r-0805/dp/2611941
+1 | 220µ/6V3/EEEFK0J221P | PANASONIC_D | C2 | https://uk.farnell.com/panasonic/eeefk0j221p/cap-220-f-6-3v-radial-smd/dp/1850086
+8 | 4148 | 1206 | D1 - D8 | https://uk.farnell.com/taiwan-semiconductor/ts4148-rxg/diode-small-signal-75v-0-15a-1206/dp/2708388
+2 | IRFML8244 | SOT23 | T1, T2 | https://uk.farnell.com/infineon/irfml8244trpbf/mosfet-n-ch-25v-5-7a-sot23/dp/1857298
+1 | IRM-02-3.3 | IRM-02 | IC1 | https://uk.farnell.com/mean-well/irm-02-3-3/power-supply-ac-dc-3-3v-0-6a/dp/2815480
+1 | CC2530 | E18-MS1-PCB | IC2 | https://www.aliexpress.com/item/-/32803052003.html
+1 | DSP2A-L2-DC3V | DSP2A-L2 | K1 | https://uk.farnell.com/panasonic-electric-works/dsp2a-l2-dc3v/relay-dpst-no-250vac-30vdc-5a/dp/2095635
+1 | MST 2.5A 250V | MST | F1 | https://uk.farnell.com/multicomp/mst-2-5a-250v/fuse-radial-slow-blow-2-5a/dp/1566104
+1 | Phoenix 1792876 | PTS-3 | X1 | https://uk.farnell.com/phoenix-contact/1792876/terminal-block-wire-to-brd-3pos/dp/2072378
+2 | TE 1-2834021-4 | MSC4 | X2, X3 | https://uk.farnell.com/te-connectivity/1-2834021-4/tb-wire-to-board-4pos-26-20awg/dp/2610379
+1 | DEBUG | MA05-2 | X4 | https://uk.farnell.com/amphenol-icc-fci/67997-210hlf/connector-header-10pos-2row-2/dp/2886080
+1 | PCB | FR4 | all | Use [Gerber files](https://github.com/formtapez/ZigUP/tree/master/Layout/Gerber) or [contact me](mailto:ZigUP@posthub.de) if you need a bare PCB
+
