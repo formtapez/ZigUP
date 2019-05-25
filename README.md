@@ -35,8 +35,7 @@ CC2530 based multi-purpose ZigBee Relais, Switch, Sensor and Router
 2. Get **IAR Embedded Workbench for 8051** from https://www.iar.com/iar-embedded-workbench (you can use the free trial version for one month)
 3. Clone ZigUP source to **\Projects\zstack\HomeAutomation\ZigUP\\**
 4. Start **\ZigUP\CC2530DB\ZigUP.eww** to load project in IAR
-5. Edit **\Projects\zstack\Tools\CC2530DB\f8wConfig.cfg** to use all 2.4 GHz channels:
-	>-DDEFAULT_CHANLIST=0x07FFF800
+5. Edit **\Projects\zstack\Tools\CC2530DB\f8wConfig.cfg** to select the ZigBee channel your coordinator is using.
 6. Compile
 
 # Flashing with CC Debugger
