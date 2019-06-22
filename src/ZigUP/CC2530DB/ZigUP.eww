@@ -11,6 +11,12 @@
         <project>ZigUP</project>
         <configuration>RouterEB</configuration>
       </member>
+      <member>
+        <project>ZigUP</project>
+        <configuration>EndDeviceEB</configuration>
+      </member>
     </batchDefinition>
   </batchBuild>
 </workspace>
+
+

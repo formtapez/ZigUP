@@ -7,7 +7,7 @@ CC2530 based multi-purpose ZigBee Relais, Switch, Sensor and Router
 # Features
 
 * [Small enough to fit under a normal lightswitch](https://raw.githubusercontent.com/formtapez/ZigUP/master/Pictures/size.jpg) in an european flush-mounted box ("Unterputzdose" - That´s the UP in ZigUP)
-* integrated ZigBee Router (extends the range of all your other devices)
+* integrated optional ZigBee Router functionality (extends the range of all your other devices)
 * Powerful bistable relais for up to 10 amps load
 * 2 Inputs for switches/buttons:
 	* Input "KEY" directly toggles the relais and outputs a ZigBee message
@@ -35,8 +35,9 @@ CC2530 based multi-purpose ZigBee Relais, Switch, Sensor and Router
 2. Get **IAR Embedded Workbench for 8051** from https://www.iar.com/iar-embedded-workbench (you can use the free trial version for one month)
 3. Clone ZigUP source to **\Projects\zstack\HomeAutomation\ZigUP\\**
 4. Start **\ZigUP\CC2530DB\ZigUP.eww** to load project in IAR
-5. Edit **\Projects\zstack\Tools\CC2530DB\f8wConfig.cfg** to select the ZigBee channel your coordinator is using.
-6. Compile
+5. Choose between **Router** and **EndDevice** configuration
+6. Edit **\Projects\zstack\Tools\CC2530DB\f8wConfig.cfg** to select the ZigBee channel your coordinator is using.
+7. Compile
 
 # Flashing with CC Debugger
 1. Get **SmartRF Flash Programmer v1.12.8 (not v2.x!)** from https://www.ti.com/tool/flash-programmer

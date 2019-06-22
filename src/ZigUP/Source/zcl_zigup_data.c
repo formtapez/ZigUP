@@ -33,7 +33,7 @@ const uint8 zclZigUP_HWRevision = ZIGUP_HWVERSION;
 const uint8 zclZigUP_ZCLVersion = ZIGUP_ZCLVERSION;
 const uint8 zclZigUP_ManufacturerName[] = { 9, 'f','o','r','m','t','a','p','e','z' };
 const uint8 zclZigUP_ModelId[] = { 5, 'Z','i','g','U','P' };
-const uint8 zclZigUP_DateCode[] = { 16, '2','0','1','9','0','5','1','8',' ',' ',' ',' ',' ',' ',' ',' ' };
+const uint8 zclZigUP_DateCode[] = { 16, '2','0','1','9','0','6','2','2',' ',' ',' ',' ',' ',' ',' ',' ' };
 const uint8 zclZigUP_PowerSource = POWER_SOURCE_MAINS_1_PHASE;
 
 uint8 zclZigUP_LocationDescription[17] = { 16, ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ' };
