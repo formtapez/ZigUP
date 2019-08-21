@@ -1,6 +1,12 @@
-void ds18b20_send(uint8 bit);
-uint8 ds18b20_read(void);
-void ds18b20_send_byte(int8 data);
-uint8 ds18b20_read_byte(void);
+void ds18b20_send_bit(uint8 bit, uint8 useInterrupts);
+uint8 ds18b20_read_bit(uint8 useInterrupts);
+void ds18b20_send_byte(int8 data, uint8 useInterrupts);
+uint8 ds18b20_read_byte(uint8 useInterrupts);
 uint8 ds18b20_RST_PULSE(void);
-uint8 ds18b20_get_temp(void);
+uint8 ds18b20_find_devices(void);
+uint8 ds18b20_Next(void);
+uint8 ds18b20_First(void);
+uint8 ds18b20_ow_crc( uint8 x);
+void ds18b20_start_conversion(void);
+float ds18b20_get_sensor_temperature(uint8);
+void ds18b20_SelectSensor(uint8);

@@ -42,7 +42,7 @@ devStates_t zclZigUP_NwkState = DEV_INIT;
 
 void zclZigUP_Reporting(uint16 REPORT_REASON)
 {
-  const uint8 NUM_ATTRIBUTES = 8;
+  const uint8 NUM_ATTRIBUTES = 9;
   
   // send report
   zclReportCmd_t *pReportCmd;
@@ -83,6 +83,11 @@ void zclZigUP_Reporting(uint16 REPORT_REASON)
     pReportCmd->attrList[7].attrID = ATTRID_REPORT_REASON;
     pReportCmd->attrList[7].dataType = ZCL_DATATYPE_UINT16;
     pReportCmd->attrList[7].attrData = (void *)(&REPORT_REASON);
+ 
+    pReportCmd->attrList[8].attrID = ATTRID_EXT_TEMPS;
+    pReportCmd->attrList[8].dataType = ZCL_DATATYPE_CHAR_STR;
+    pReportCmd->attrList[8].attrData = (void *)(&EXT_Temperature_string);
+   
       
     zclZigUP_DstAddr.addrMode = (afAddrMode_t)Addr16Bit;
     zclZigUP_DstAddr.addr.shortAddr = 0;
@@ -309,20 +314,26 @@ void zclZigUP_Init( byte task_id )
   ADC_Voltage = *(float*)&float_NaN;
   CPU_Temperature = *(float*)&float_NaN;
   
+  char buffer[100];
+  
   // autodetecting sensor type
   if (DHT22_Measure())
   {
-    TEMP_SENSOR = 1;
+    TEMP_SENSOR = -1;
     UART_String("Sensor type DHT22 detected.");
   }
-  else if (ds18b20_get_temp())
+  else if(TEMP_SENSOR = ds18b20_find_devices()) 
   {
-    TEMP_SENSOR = 2;
-    UART_String("Sensor type DS18B20 detected.");
+    sprintf(buffer, "Found %d ds18b20 sensors", TEMP_SENSOR);
+    UART_String(buffer);
   }
-  else UART_String("No sensor detected.");
+  else 
+  {  
+    sprintf(buffer, "No sensor detected. code: %d", TEMP_SENSOR);
+    UART_String(buffer);
+  }
 
-  // start measurement task for reporting of values
+// start measurement task for reporting of values
   osal_start_reload_timer( zclZigUP_TaskID, ZIGUP_REPORTING_EVT, ZIGUP_REPORTING_INTERVAL );
   
   UART_String("Init done.");
