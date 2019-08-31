@@ -17,13 +17,8 @@ __interrupt void IRQ_S0(void)
 {
   if (P0IFG & (1<<6))	// Interrupt flag for P0.6 (S0)?
   {
-    // debounce
-    _delay_ms(5);
-    if (!P0_6) // still pressed?
-    {
-      S0++;
-      UART_String("[INT] S0!");
-    }
+    S0++;
+    UART_String("[INT] S0!");
     
     // Clear interrupt flags
     P0IFG &= ~(1<<6);	// Clear Interrupt flag for P0.6 (S0)
