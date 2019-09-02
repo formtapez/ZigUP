@@ -28,7 +28,8 @@ extern "C"
 #define ATTRID_ADC_VOLT         41365
 #define ATTRID_DIG_INPUT        41366
 #define ATTRID_REPORT_REASON    41367
-
+#define ATTRID_EXT_TEMPS        41368
+  
 extern SimpleDescriptionFormat_t zclZigUP_SimpleDesc[];
 
 extern CONST zclCommandRec_t zclZigUP_Cmds[];

@@ -12,7 +12,7 @@ CC2530 based multi-purpose ZigBee Relais, Switch, Sensor and Router
 * 2 Inputs for switches/buttons:
 	* Input "KEY" directly toggles the relais and outputs a ZigBee message
 	* Input "DIG" only outputs a ZigBee message - So your coordinator can decide if the relais has to be toggled or not.
-* Input for digital temperature and humidity sensors (DHT22/AM2302/DS18B20) (Measurements will be reported via ZigBee)
+* Input for 16 digital temperature (DS18B20) and 1 humidity sensors (DHT22/AM2302) (Measurements will be reported via ZigBee)
 * Input for S0-Bus impulses from power-, water- or gas-meters. Count-Value will be reported via ZigBee)
 * Output for one normal LED or up to 10 WS2812B/Neopixel RGB-LEDs (controllable via ZigBee)
 * Analog input to measure voltages of up to 32 Volt. (Voltage will be reported via ZigBee)
