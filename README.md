@@ -74,5 +74,5 @@ Qty | Value | Package | Parts | URL (exemplary supplier)
 1 | Phoenix 1792876 | PTS-3 | X1 | https://uk.farnell.com/phoenix-contact/1792876/terminal-block-wire-to-brd-3pos/dp/2072378
 2 | TE 1-2834021-4 | MSC4 | X2, X3 | https://uk.farnell.com/te-connectivity/1-2834021-4/tb-wire-to-board-4pos-26-20awg/dp/2610379
 1 | DEBUG | MA05-2 | X4 | https://uk.farnell.com/amphenol-icc-fci/67997-210hlf/connector-header-10pos-2row-2/dp/2886080
-1 | PCB | FR4 | all | Use [Gerber files](https://github.com/formtapez/ZigUP/tree/master/Layout/Gerber) or [contact me](mailto:ZigUP@posthub.de) if you need a bare PCB
+1 | PCB | FR4 | all | Use [Gerber files](https://github.com/formtapez/ZigUP/tree/master/Layout/Gerber) or contact me if you need a bare PCB
 
